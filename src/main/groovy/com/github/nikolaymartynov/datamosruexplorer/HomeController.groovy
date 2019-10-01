@@ -41,13 +41,18 @@ class HomeController {
                 it.lastUpdateDate
             }.reverse()[0..[settings.maxFreshest - 1, currentDatasets.size()].min()]
             Map<Long, Dataset> datasetsById = datasets.collectEntries { [it.id, it] }
-            List<SizedDataset> sizedDatasets = new ForkJoinPool(settings.scanParallelism).submit({
-                newestDatasets.parallelStream().map {
-                    new SizedDataset(id: it.id, caption: it.caption, lastUpdateDate: it.lastUpdateDate,
-                            size: mosRuDatasets.getDatasetSize(settings.apiKey, it.id))
-                }.collect(Collectors.toList())
-            } as Callable<List>).get().sort { a, b -> b.size <=> a.size }
-            result.datasets = sizedDatasets[0..[settings.maxLargest - 1, sizedDatasets.size()].min()]
+            ForkJoinPool pool = new ForkJoinPool(settings.scanParallelism)
+            try {
+                List<SizedDataset> sizedDatasets = pool.submit({
+                    newestDatasets.parallelStream().map {
+                        new SizedDataset(id: it.id, caption: it.caption, lastUpdateDate: it.lastUpdateDate,
+                                size: mosRuDatasets.getDatasetSize(settings.apiKey, it.id))
+                    }.collect(Collectors.toList())
+                } as Callable<List>).get().sort { a, b -> b.size <=> a.size }
+                result.datasets = sizedDatasets[0..[settings.maxLargest - 1, sizedDatasets.size()].min()]
+            } finally {
+                pool.shutdown()
+            }
         }
         "result"
     }
