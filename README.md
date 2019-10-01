@@ -3,7 +3,7 @@ A simplest possible demo that demonstrates getting data from http://data.mos.ru 
 
 # Building
 ```bash
-./gradlew built
+./gradlew build
 ```
 
 # Running
