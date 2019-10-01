@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Settings</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<form action="#" th:action="@{/}" th:object="${settings}" method="post">
+    <table>
+        <tr>
+            <td>API key</td>
+            <td>
+                <input type="text" th:field="*{apiKey}"/>
+                <div th:errors="*{apiKey}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Scan parallelism</td>
+            <td>
+                <input type="number" th:field="*{scanParallelism}"/>
+                <div th:errors="*{scanParallelism}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Top freshest data sets</td>
+            <td>
+                <input type="number" th:field="*{maxFreshest}"/>
+                <div th:errors="*{maxFreshest}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Top largest data sets</td>
+            <td>
+                <input type="number" th:field="*{maxLargest}"/>
+                <div th:errors="*{maxLargest}"/>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Submit"/></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

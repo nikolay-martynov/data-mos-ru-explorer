@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Result</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<table>
+    <tr>
+        <td>Total datasets</td>
+        <td th:text="${result.totalDatasets}"/>
+    </tr>
+    <tr>
+        <td>Current datasets</td>
+        <td th:text="${result.currentDatasets}"/>
+    </tr>
+</table>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Caption</th>
+        <th>Id</th>
+        <th>Last update</th>
+        <th>Size</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="dataset : ${result.datasets}">
+        <td th:text="${dataset.caption}"/>
+        <td th:text="${dataset.id}"/>
+        <td th:text="${dataset.lastUpdateDate}"/>
+        <td th:text="${dataset.size}"/>
+    </tr>
+    </tbody>
+</table>
+<div>
+    <p>
+        <a th:href="@{/}">Return</a>
+    </p>
+</div>
+</body>
+</html>
